@@ -58,8 +58,6 @@ const Welcome = (who) => {
 
 // Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
-    console.log(apod)
-
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
     const photodate = new Date(apod.date)
@@ -91,6 +89,6 @@ const getImageOfTheDay = (state) => {
     return fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
-
-
 }
+const res = fetch(`http://localhost:3000/rovers`)
+console.log(res)
