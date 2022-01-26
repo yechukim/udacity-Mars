@@ -27,15 +27,23 @@ const App = (state) => {
             <h1>Explore Mars</h1>
             <div class='list'>
                 <a href="/">Home </a>
-                <a href="/dashboard">Dashboard</a>
+            
             </div>
         </div>
 
         <main>
             ${Welcome(store.user.name)}
             <section>
+            <h2 class='title'> Image of Today</h2>
                 ${ImageOfTheDay(apod)}
+
+                <h2 class='title'> Select Rovers You want to Check out ! 🪐</h2>
+                <div class='rovers-wrapper'>
+                ${RoversInfo(rovers)}
+                </div>
             </section>
+
+            
         </main>
         <footer></footer>
     `
@@ -46,8 +54,7 @@ window.addEventListener('load', () => {
     render(root, store)
 })
 
-// ------------------------------------------------------  COMPONENTS
-
+//COMPONENTS 
 const Welcome = (who) => {
     if (who) {
         return `<h1 class='welcome'>Welcome ${who} :) </h1>`
@@ -55,6 +62,19 @@ const Welcome = (who) => {
     return `<h1 class='welcome'>Welcome ;) </h1>`
 }
 
+const RoversInfo = (rovers) => {
+    return rovers.map((rover, index) => {
+        return `
+        <div
+        class='rover' 
+        key=${rover + index}>
+        <h3>${rover}</h3>
+        <p>rovers desc</p>
+        
+        </div>
+        `
+    }).join('')
+}
 
 // Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
@@ -74,15 +94,14 @@ const ImageOfTheDay = (apod) => {
         `)
     } else {
         return (`
-            <img src="${apod.image.url}" height="350px" width="100%" />
+            <img
+            src="${apod.image.url}" height="350px" width="100%" />
             <p>${apod.image.explanation}</p>
         `)
     }
 }
 
-// ------------------------------------------------------  API CALLS
-
-// Example API call
+// API CALL
 const getImageOfTheDay = (state) => {
     let { apod } = state
 
@@ -90,5 +109,10 @@ const getImageOfTheDay = (state) => {
         .then(res => res.json())
         .then(apod => updateStore(store, { apod }))
 }
-const res = fetch(`http://localhost:3000/rovers`)
-console.log(res)
+const getRovers = (state) => {
+
+    fetch(`http://localhost:3000/rovers`)
+        .then(res => res.json())
+        .then(rovers => console.log(rovers))
+}
+getRovers()

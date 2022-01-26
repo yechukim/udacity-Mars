@@ -12,18 +12,23 @@ app.use(bodyParser.json())
 
 app.use('/', express.static(path.join(__dirname, '../public')))
 
-// your API calls
+//rover 
 app.get('/rovers', async (req, res) => {
+    // const today = new Date()
+    // const date = today.getDate()
+    // const year = today.getFullYear()
+    // const month = today.getMonth() + 1
+
     try {
-        const test = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=2015-6-3&api_key=${process.env.API_KEY}`)
+        const roversResponse = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${year}-${month}-${date}&api_key=${process.env.API_KEY}`)
             .then(res => res.json())
-        res.send({ test })
+        res.send({ roversResponse })
     }
     catch (err) {
         console.log('/rovers error:', err)
     }
 })
-// example API call
+// today image
 app.get('/apod', async (req, res) => {
     try {
         let image = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${process.env.API_KEY}`)
