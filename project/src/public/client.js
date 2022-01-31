@@ -17,7 +17,6 @@ const render = async (root, state) => {
     root.innerHTML = App(state)
 }
 
-
 // create content
 const App = (state) => {
     let { rovers, apod } = state
@@ -25,10 +24,6 @@ const App = (state) => {
     return `
         <div class='navbar'> 
             <h1>Explore Mars</h1>
-            <div class='list'>
-                <a href="/">Home </a>
-            
-            </div>
         </div>
 
         <main>
@@ -36,24 +31,28 @@ const App = (state) => {
             <section>
             <h2 class='title'> Image of Today</h2>
                 ${ImageOfTheDay(apod)}
-
-                <h2 class='title'> Select Rovers You want to Check out ! 🪐</h2>
-                <div class='rovers-wrapper'>
-                ${RoversInfo(rovers)}
-                </div>
             </section>
 
-            
+            <section class='rover_photo'>
+            ${RoverPhoto(rovers)}
+            </secion
         </main>
         <footer></footer>
     `
 }
 
+// <h2 class='title'> Select Rovers You want to Check out ! 🪐</h2>
+// <div class='rovers-wrapper'>
+// ${RoverCard(rovers)}
+// </div>
+
 // listening for load event because page should load before any JS is called
 window.addEventListener('load', () => {
     render(root, store)
 })
-
+function getRover(rover) {
+    console.log(rover)
+}
 //COMPONENTS 
 const Welcome = (who) => {
     if (who) {
@@ -62,26 +61,38 @@ const Welcome = (who) => {
     return `<h1 class='welcome'>Welcome ;) </h1>`
 }
 
-const RoversInfo = (rovers) => {
+const RoverPhoto = (rovers) => {
+    return rovers.map((rover, index) => {
+        return `<div key=${rover + index}>${getRoverPhoto(rover)}</div>`
+    })
+}
+
+const RoverCard = (rovers) => {
     return rovers.map((rover, index) => {
         return `
         <div
+        onclick="clickRover()"
         class='rover' 
         key=${rover + index}>
-        <h3>${rover}</h3>
-        <p>rovers desc</p>
-        
+        <h3 class='roverName'>
+        ${rover}
+        </h3>
+        <p class='smallp'>click to see details...</p>        
+        </div>
+        <div class='rover-detail'>
+        ${getRover(rover)}
         </div>
         `
     }).join('')
 }
+
 
 // Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
     // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
     const photodate = new Date(apod.date)
-    if (!apod || apod.date === today.getDate() ) {
+    if (!apod || photodate === today.getDate()) {
         getImageOfTheDay(store)
     }
 
@@ -93,6 +104,7 @@ const ImageOfTheDay = (apod) => {
             <p>${apod.explanation}</p>
         `)
     } else {
+
         return (`
             <img
             src="${apod.image.url}" height="350px" width="100%" />
@@ -103,7 +115,6 @@ const ImageOfTheDay = (apod) => {
 
 // API CALL
 const getImageOfTheDay = (state) => {
-    let { apod } = state
 
     return fetch(`http://localhost:3000/apod`)
         .then(res => res.json())
@@ -115,4 +126,11 @@ const getRovers = (state) => {
         .then(res => res.json())
         .then(rovers => console.log(rovers))
 }
-getRovers()
+
+const getRoverPhoto = (rover_name) => {
+    fetch(`http://localhost:3000/rovers/${rover_name}`)
+        .then(res => res.json())
+        .catch(err => console.log(err))
+    //.then(res => console.log(res))
+    return
+}

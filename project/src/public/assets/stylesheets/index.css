@@ -2,7 +2,6 @@
 * {
   margin: 0;
   font-family: "Quicksand";
-  background-color: #140130;
   color: rgb(176, 239, 255);
 }
 
@@ -13,6 +12,7 @@ body {
   flex-direction: column;
   font-family: Arial;
   min-height: 100vh;
+  background-color: #140130;
 }
 
 .navbar {
@@ -87,4 +87,19 @@ height: 50px;
   flex-grow: 1;
   justify-content: space-evenly;
   text-align: center;
+  background-color: rgba(45, 27, 126, 0.486);
+  margin: 5px 10px;
+  border-radius: 5px;
+  padding:20px 5px;
+}
+.rover:hover{
+  cursor: pointer;
+  background-color: rgba(86, 55, 226, 0.486);
+}
+.smallp{
+  font-size: 13px;
+}
+.rover-detail{
+  background-color: rgba(86, 55, 226, 0.486);
+  border-radius: 5px;
 }
