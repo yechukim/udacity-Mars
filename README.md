@@ -1,3 +1,11 @@
+# udacity-Mars
+Udacity 2nd project 🪐 Mars 
+
+git clone this repository and move to `project` directory, then run comman below or `npm start`
+```console
+yarn start
+```
+
 # Functional Programming with Javascript 
 
 ## Student Instructions
@@ -68,5 +76,4 @@ Some ideas might be to incorporate the Astronomy Photo of the Day into your desi
 
 Create an image gallery slider, put a full page background image, code some falling asteroids with css animations ... the visual design of this UI is up to you! There is a lot of awesome dashboard design inspiration out there. You have already been given a good start with a mobile-first stylesheet already set up for you. 
 
-
-
+=======
