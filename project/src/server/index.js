@@ -13,9 +13,10 @@ app.use(bodyParser.json())
 app.use('/', express.static(path.join(__dirname, '../public')))
 
 //rover 
-app.get('/rovers', async (req, res) => {
+app.get('/rovers/:rover_name', async (req, res) => {
+    let rover_name = req.params.rover_name
     try {
-        const rovers = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=${process.env.API_KEY}`)
+        const rovers = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${rover_name}/photos?sol=1000&api_key=${process.env.API_KEY}`)
             .then(res => res.json())
         res.send({ rovers })
     }
@@ -24,12 +25,13 @@ app.get('/rovers', async (req, res) => {
     }
 })
 //mission manifest
-app.get('/rovers/:rover_name', async (req, res) => {
+app.get('/manifest/:rover_name', async (req, res) => {
     let rover_name = req.params.rover_name
-    console.log(req.params)
     try {
         const rover_photos = await fetch(`https://api.nasa.gov/mars-photos/api/v1/manifests/${rover_name}&api_key=${process.env.API_KEY}`)
-            .then(res => res.json())
+            .then(res => {
+                return res.json()
+            })
         res.send({ rover_photos })
     }
     catch (err) {

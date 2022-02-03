@@ -1,8 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 * {
   margin: 0;
-  font-family: "Quicksand";
-  color: rgb(176, 239, 255);
+  font-family: 'Courier New', Courier, monospace;
+}
+img{
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+a{
+  text-decoration: none;
+  color:#fff
+}
+a:hover{
+  color: rgb(119, 119, 119);
+  
 }
 
 /* -------------------  MOBILE  --------------------- */
@@ -12,39 +24,58 @@ body {
   flex-direction: column;
   font-family: Arial;
   min-height: 100vh;
-  background-color: #140130;
 }
 
-.navbar {
-  height: 60px;
-  width: 100%;
+header > ul{
   display: flex;
-  padding:20px;
-  margin:0 auto;
+  justify-content: flex-end;
+  background-color: #333;
+}
+header > ul >li{
+  padding:30px 20px;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+header > ul >li:hover{
+  padding:30px 20px;
+  color: rgb(119, 119, 119);
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
   align-items: center;
-}
-.navbar h1{
-  color: rgb(98, 255, 208);
-  margin-bottom: 10px;
-}
-.list {
- margin-left: auto;
-}
-.list >a{
-  color: rgb(98, 255, 208);
-  padding-left: 10px;
-  text-decoration: none;
+  height: 100vh;
 }
 
 main {
-  flex: 1;
-  padding: 20px;
+  flex: 1; 
 }
 section{
   margin-top: 15px;
 }
 footer {
-height: 50px;
+  background-color: #333;
+  color: #fff;
+  padding:3px;
+display: flex;
+justify-content: flex-end;
+font-size: 14px;
+}
+.card{
+  border-radius: 8px;
+  margin:20px 10px;
+  padding:10px 20px;
+  background-color: rgba(223, 223, 223, 0.719);
+}
+
+.card > .desc {
+  color: #333;
+  font-weight: 300;
 }
 
 /* -------------------  TABLET  --------------------- */
@@ -63,43 +94,4 @@ height: 50px;
 
 @media (min-width: 1824px) {
   /* use mobile */
-}
-
-.welcome {
-  text-align: center;
-}
-
-.title {
-  margin-top: 20px;
-  padding:10px 5px;
-  border-top: 1px solid #310070;
-  text-align: center;
-  font-weight: 400;
-  font-size: 24px;
-  margin: 10px 20px;
-  color: #f40efc;
-}
-.rovers-wrapper {
-  display: flex;
-  width: 100%;
-}
-.rover{
-  flex-grow: 1;
-  justify-content: space-evenly;
-  text-align: center;
-  background-color: rgba(45, 27, 126, 0.486);
-  margin: 5px 10px;
-  border-radius: 5px;
-  padding:20px 5px;
-}
-.rover:hover{
-  cursor: pointer;
-  background-color: rgba(86, 55, 226, 0.486);
-}
-.smallp{
-  font-size: 13px;
-}
-.rover-detail{
-  background-color: rgba(86, 55, 226, 0.486);
-  border-radius: 5px;
 }
