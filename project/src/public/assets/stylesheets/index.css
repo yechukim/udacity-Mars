@@ -29,7 +29,7 @@ body {
 header > ul{
   display: flex;
   justify-content: flex-end;
-  background-color: #333;
+  background-color: rgb(35, 9, 94);
 }
 header > ul >li{
   padding:30px 20px;
@@ -51,13 +51,39 @@ header > ul >li:hover{
   align-items: center;
   height: 100vh;
 }
+.tab-title{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 
+}
+.tab-menu .list{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tab-menu .list .btn{
+padding:10px 20px;
+background-color: rgb(35, 9, 94);
+color:#fff;
+margin-bottom: 10px;
+border-radius: 10px;
+margin: 5px 10px;
+cursor: pointer;
+transition: .4s;
+text-align: center;
+}
+
+.tab-menu .list .btn:hover{
+  background-color: rgb(17, 91, 94);
+}
 main {
   flex: 1; 
 }
 section{
   margin-top: 15px;
 }
+
 footer {
   background-color: #333;
   color: #fff;
