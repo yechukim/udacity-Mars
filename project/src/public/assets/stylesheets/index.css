@@ -84,6 +84,13 @@ section{
   margin-top: 15px;
 }
 
+section > .rover-img{
+  width: 500px;
+  height: auto;
+  margin:5px auto;
+
+}
+
 footer {
   background-color: #333;
   color: #fff;

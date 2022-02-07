@@ -28,6 +28,7 @@ function attachEvent() {
     btn.forEach(btn => btn.addEventListener('click', (e) => {
         const rover = e.target.textContent
         getRecentPhotos(rover)
+
     }))
 }
 
@@ -43,26 +44,23 @@ const App = (state) => {
         </ul>
     </header>
     <section class='card'>
-    <div class='tab-title'>Click Rover to check its details !</div>
+    <div class='tab-title'>Click Rover to see lateset pictures</div>
     <div class="tab-menu">
     <ul class="list">
       <li class="is_on">
         <div class="btn">${rovers[0]}</div>
-       
       </li>
       <li>
       <div class="btn">${rovers[1]}</div>
-
       </li>
       <li>
       <div class="btn">${rovers[2]}</div>
-
       </li>
     </ul>
   </div>
-  <div>
+  </section>
+  <section class='card'>
   ${SelectedRoverPhoto()}
-  </div>
   </section>
         <main>
             <section class='card'>
@@ -77,6 +75,13 @@ const App = (state) => {
     `
 }
 const SelectedRoverPhoto = () => {
+    const photos = store.photos
+    const photoArrays = Object.values(photos)
+    if (!photoArrays.length > 0) return `<div> if you click rover, you will see pictures here </div>`
+    return photoArrays[0].map(photo => {
+        return (
+            ` <img key="${photo.id}" src="${photo.img_src}" class="rover-img"/>`)
+    }).join('')
 
 }
 const ImageOfTheDay = (apod) => {
@@ -112,7 +117,6 @@ const getImageOfTheDay = (state) => {
 }
 
 const getRecentPhotos = (rover_name) => {
-    console.log(store)
     return fetch(`http://localhost:3000/photos/${rover_name}`)
         .then(res => res.json())
         .then(result => {
