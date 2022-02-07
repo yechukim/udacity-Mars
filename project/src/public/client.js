@@ -1,20 +1,24 @@
+
 let store = {
-    user: { name: "Friends" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
     photos: {},
     roverDetail: {}
 }
 
+const greeting = Immutable.Map({
+    name: 'Friend',
+    date: new Date()
+})
+
+
 // add our markup to the page
 const root = document.getElementById('root')
 
 window.addEventListener('load', () => {
-    // render(root, store.toJS())
     render(root, store)
 })
 const updateStore = (store, newState) => {
-    //  store = Object.assign(store.toJS(), newState)
     store = Object.assign(store, newState)
     render(root, store)
 }
@@ -22,56 +26,75 @@ const updateStore = (store, newState) => {
 const render = async (root, state) => {
     root.innerHTML = App(state)
     attachEvent()
+    attachModalEvent()
 }
-
+let roverClicked 
 function attachEvent() {
     let btn = document.querySelectorAll('.btn')
-    let detailBtn = document.querySelectorAll('.detail-btn')
-
     btn.forEach(btn => btn.addEventListener('click', (e) => {
         const rover = e.target.textContent
         getRecentPhotos(rover)
+        roverClicked = true
     }))
+}
 
+function attachModalEvent() {
+
+    let detailBtn = document.querySelectorAll('.detail-btn')
+    let modal = document.querySelector('.modal')
+    let closeBtn = document.querySelector('.close-btn')
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none'
+    })
     detailBtn.forEach(btn => btn.addEventListener('click', e => {
         getRoverInfo(e.target.dataset.key)
+        roverClicked = false
     }))
+    if (roverClicked || !store.roverDetail?.rover) return
+    showModal()
+
+    function showModal() {
+        modal.style.display = 'block'
+    }
 }
 
 // create content
 const App = (state) => {
     let { rovers, apod } = state
+    const { name, date } = greeting.toJS()
 
     return `
     <div class='block'>
     <header>
+    <div class='greeting'>Hello, ${name}! 🙈 today is ${date.toDateString()}</div>
         <ul>
             <li h><a href="/">MARS DASHBOARD</a></li>
         </ul>
     </header>
-    <div class='title'>Click Rover to see lateset pictures</div>
+    <div class='title'>Click buttons below to see lateset pictures</div>
 
     <section class='card'>
     <div class="tab-menu">
     <ul class="list">
-      <li>
+    <li>
         <div class="btn">${rovers[0]}</div>
         <button class="detail-btn" data-key="${rovers[0]}" >details</button>
-      </li>
-      <li>
-      <div class="btn">${rovers[1]}</div>
-      <button class="detail-btn"  data-key="${rovers[1]}">details</button>
-      </li>
-      <li>
-      <div class="btn">${rovers[2]}</div>
-      <button class="detail-btn"  data-key="${rovers[2]}">details</button>
-      </li>
+    </li>
+    <li>
+    <div class="btn">${rovers[1]}</div>
+    <button class="detail-btn"  data-key="${rovers[1]}">details</button>
+    </li>
+    <li>
+    <div class="btn">${rovers[2]}</div>
+    <button class="detail-btn"  data-key="${rovers[2]}">details</button>
+    </li>
     </ul>
-  </div>
-  </section>
-  <section class='card'>
-  ${SelectedRoverPhoto()}
-  </section>
+    </div>
+    </section>
+    <section class='card'>
+    ${SelectedRoverPhoto()}
+    </section>
         <main>
         <div class='title'>Image of the day </div>
             <section class='card'>
@@ -82,8 +105,32 @@ const App = (state) => {
         <footer>
         <div>2022 udacity project mars</div>
         </footer>
+        <div class="modal">
+        <div class="modal-content">
+        <span class="close-btn">X</span>
+        ${RoverDetail()}
+        </div>
+    </div>
     </div>
     `
+}
+const RoverDetail = () => {
+    if (store.roverDetail?.rover) {
+        const { landing_date, launch_date, max_date, max_sol, name, status } = store.roverDetail.rover
+        return (
+            `
+            <div class="modal-detail">
+                <div>landing date : ${landing_date}</div>
+                <div>launch date : ${launch_date}</div>
+                <div>max date : ${max_date}</div>
+                <div>max sol : ${max_sol}</div>
+                <div>name : ${name}</div>
+                <div>status : ${status}</div>
+            </div>
+            `
+        )
+    }
+    return `<div> loading error</div>`
 }
 const SelectedRoverPhoto = () => {
     const photos = store.photos
@@ -117,6 +164,7 @@ const ImageOfTheDay = (apod) => {
     }
 }
 
+
 // API CALL
 const getImageOfTheDay = (state) => {
 
@@ -145,7 +193,7 @@ const getRoverInfo = (rover_name) => {
             const { landing_date, launch_date, max_date, max_sol, name, status } = photo_manifest
             updateStore(store, {
                 roverDetail: {
-                    [rover_name]: {
+                    rover: {
                         landing_date,
                         launch_date,
                         max_date,
