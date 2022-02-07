@@ -187,7 +187,7 @@ const getRecentPhotos = (rover_name) => {
 
 const getRoverInfo = (rover_name) => {
     if (!rover_name) return
-    fetch(`http://localhost:3000/rover/${rover_name}`)
+    return fetch(`http://localhost:3000/rover/${rover_name}`)
         .then(res => res.json())
         .then(({ photo_manifest }) => {
             const { landing_date, launch_date, max_date, max_sol, name, status } = photo_manifest
