@@ -1,22 +1,34 @@
-let store = Immutable.Map({
+let store = {
     user: { name: "Friends" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
-})
+    photos: {}
+}
 
 // add our markup to the page
 const root = document.getElementById('root')
 
 window.addEventListener('load', () => {
-    render(root, store.toJS())
+    // render(root, store.toJS())
+    render(root, store)
 })
 const updateStore = (store, newState) => {
-    store = Object.assign(store.toJS(), newState)
+    //  store = Object.assign(store.toJS(), newState)
+    store = Object.assign(store, newState)
     render(root, store)
 }
 
 const render = async (root, state) => {
     root.innerHTML = App(state)
+    attachEvent()
+}
+
+function attachEvent() {
+    let btn = document.querySelectorAll('.btn')
+    btn.forEach(btn => btn.addEventListener('click', (e) => {
+        const rover = e.target.textContent
+        getRecentPhotos(rover)
+    }))
 }
 
 // create content
@@ -36,17 +48,20 @@ const App = (state) => {
     <ul class="list">
       <li class="is_on">
         <div class="btn">${rovers[0]}</div>
-        <div id="tab1" class="cont">${RoverInfo(rovers[0])}</div>
+       
       </li>
       <li>
       <div class="btn">${rovers[1]}</div>
-      <div id="tab2" class="cont">${RoverInfo(rovers[1])}</div>
+
       </li>
       <li>
       <div class="btn">${rovers[2]}</div>
-      <div id="tab3" class="cont">${RoverInfo(rovers[2])}</div>
+
       </li>
     </ul>
+  </div>
+  <div>
+  ${SelectedRoverPhoto()}
   </div>
   </section>
         <main>
@@ -61,25 +76,15 @@ const App = (state) => {
     </div>
     `
 }
+const SelectedRoverPhoto = () => {
 
-const RoverInfo = async (rover) => {
-    const response = await getRoversInfo(rover)
-    const photos = response.photos
-    const img = photos[0].img_src
-
-    return `<img src="${img}"  height="350px" />`
 }
-
-// Example of a pure function that renders infomation requested from the backend
 const ImageOfTheDay = (apod) => {
-    // If image does not already exist, or it is not from today -- request it again
     const today = new Date()
     const photodate = new Date(apod.date)
     if (!apod || photodate === today.getDate()) {
         getImageOfTheDay(store)
     }
-
-    // check if the photo of the day is actually type video!
     if (apod.media_type === "video") {
         return (`
             <p>See today's featured video <a href="${apod.url}">here</a></p>
@@ -106,19 +111,21 @@ const getImageOfTheDay = (state) => {
         })
 }
 
-
-const getRoversInfo = (rover_name) => {
-
-    const data = fetch(`http://localhost:3000/rovers/${rover_name}`)
+const getRecentPhotos = (rover_name) => {
+    console.log(store)
+    return fetch(`http://localhost:3000/photos/${rover_name}`)
         .then(res => res.json())
-        .then(result => result.rovers)
-    return data
+        .then(result => {
+            updateStore(store, {
+                photos: { [rover_name]: [...result.latest_photos] }
+            })
+        })
 }
+
 
 const getRoverPhoto = (rover_name) => {
     if (!rover_name) return
-    fetch(`http://localhost:3000/manifest/${rover_name}`)
+    fetch(`http://localhost:3000/rover/${rover_name}`)
         .then(res => res.json())
-        .then(photo => console.log(`photo ${photo}`))
-        .catch(err => console.log(err))
+        .then(photo => console.log(photo))
 }
