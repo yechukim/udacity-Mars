@@ -1,6 +1,6 @@
 * {
   margin: 0;
-  font-family: 'Courier New', Courier, monospace;
+  padding: 0;
 }
 img{
   display: block;
@@ -51,27 +51,31 @@ header > ul >li:hover{
   align-items: center;
   height: 100vh;
 }
-.tab-title{
+.title{
+  font-size: 24px;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-
+  margin: 20px auto;
 }
 .tab-menu .list{
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.tab-menu .list li{
+  margin:0 auto;
+
+}
 .tab-menu .list .btn{
 padding:10px 20px;
 background-color: rgb(35, 9, 94);
 color:#fff;
-margin-bottom: 10px;
+margin-bottom: 15px;
 border-radius: 10px;
-margin: 5px 10px;
 cursor: pointer;
 transition: .4s;
 text-align: center;
+font-size: 24px;
 }
 
 .tab-menu .list .btn:hover{
@@ -100,6 +104,7 @@ justify-content: flex-end;
 font-size: 14px;
 }
 .card{
+  font-size: 20px;
   border-radius: 8px;
   margin:20px 10px;
   padding:10px 20px;
@@ -109,7 +114,21 @@ font-size: 14px;
 .card > .desc {
   color: #333;
   font-weight: 300;
+  font-size: 20px;
 }
+
+ .detail-btn{
+  width:100%;
+  padding:10px;
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  font-weight: 300;
+  border: 1px solid #333;
+  cursor: pointer;
+}
+
 
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {

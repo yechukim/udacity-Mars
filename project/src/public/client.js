@@ -2,7 +2,8 @@ let store = {
     user: { name: "Friends" },
     apod: '',
     rovers: ['Curiosity', 'Opportunity', 'Spirit'],
-    photos: {}
+    photos: {},
+    roverDetail: {}
 }
 
 // add our markup to the page
@@ -25,10 +26,15 @@ const render = async (root, state) => {
 
 function attachEvent() {
     let btn = document.querySelectorAll('.btn')
+    let detailBtn = document.querySelectorAll('.detail-btn')
+
     btn.forEach(btn => btn.addEventListener('click', (e) => {
         const rover = e.target.textContent
         getRecentPhotos(rover)
+    }))
 
+    detailBtn.forEach(btn => btn.addEventListener('click', e => {
+        getRoverInfo(e.target.dataset.key)
     }))
 }
 
@@ -40,21 +46,25 @@ const App = (state) => {
     <div class='block'>
     <header>
         <ul>
-            <li h><a href="/">APOD</a></li>
+            <li h><a href="/">MARS DASHBOARD</a></li>
         </ul>
     </header>
+    <div class='title'>Click Rover to see lateset pictures</div>
+
     <section class='card'>
-    <div class='tab-title'>Click Rover to see lateset pictures</div>
     <div class="tab-menu">
     <ul class="list">
-      <li class="is_on">
+      <li>
         <div class="btn">${rovers[0]}</div>
+        <button class="detail-btn" data-key="${rovers[0]}" >details</button>
       </li>
       <li>
       <div class="btn">${rovers[1]}</div>
+      <button class="detail-btn"  data-key="${rovers[1]}">details</button>
       </li>
       <li>
       <div class="btn">${rovers[2]}</div>
+      <button class="detail-btn"  data-key="${rovers[2]}">details</button>
       </li>
     </ul>
   </div>
@@ -63,6 +73,7 @@ const App = (state) => {
   ${SelectedRoverPhoto()}
   </section>
         <main>
+        <div class='title'>Image of the day </div>
             <section class='card'>
                 ${ImageOfTheDay(apod)}
             </section>
@@ -126,10 +137,23 @@ const getRecentPhotos = (rover_name) => {
         })
 }
 
-
-const getRoverPhoto = (rover_name) => {
+const getRoverInfo = (rover_name) => {
     if (!rover_name) return
     fetch(`http://localhost:3000/rover/${rover_name}`)
         .then(res => res.json())
-        .then(photo => console.log(photo))
+        .then(({ photo_manifest }) => {
+            const { landing_date, launch_date, max_date, max_sol, name, status } = photo_manifest
+            updateStore(store, {
+                roverDetail: {
+                    [rover_name]: {
+                        landing_date,
+                        launch_date,
+                        max_date,
+                        max_sol,
+                        name,
+                        status,
+                    }
+                }
+            })
+        })
 }
